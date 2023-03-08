@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ article.title }}</h1>
+<div>
+    <p>{{ article.category.category_name }}</p>
+    <p><iframe width="560" height="315" src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
+    <p>{{ article.text }}</p>
+    <p>{{ movie_title }}</p>
+</div>
+<div>
+    <a href='{% url "moviebbs:index" %}'  class='btn btn-outline-primary'>一覧へ戻る</a>
+    {% if request.user.id == object.user_id %}
+        <a href='{% url "moviebbs:delete" article.pk %}' class='btn btn-outline-secondary'>削除</a>
+    {% endif %}
+</div>
+
+<!-- コメントを表示 -->
+{% if comments %}
+<div class="comments">
+  <h2>コメント一覧</h2>
+  {% for comment in comments %}
+  <div class="comment">
+    <p>{{ comment.user }}：{{ comment.created_at }}</p>
+    <p>{{ comment.text }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+<!-- コメント作成フォームを表示 -->
+<div class="comment-form">
+  <h2>コメント投稿</h2>
+  <form action='{% url "moviebbs:comment" article.pk %}' method="post">
+    {% csrf_token %}
+    {{ comment_form}}
+    <div>
+      <button type="submit" class='btn btn-outline-primary'>送信</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

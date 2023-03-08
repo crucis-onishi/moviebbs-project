@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' >
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <title>ゆっくり村</title>
+    </head>
+    <body>
+        <nav class='navbar navbar-expand-sm navbar-dark bg-dark fixed-top'>
+            <a class='navbar-brand' href='{% url "moviebbs:index" %}'>ゆっくり村</a>
+            <ul class='navbar-nav'>
+                {% if user.is_authenticated %}
+                    <li class='nav-time'>
+                        <span class='navbar-text'>{{ user }} - </span>
+                    </li>
+                    <li class='nav-item'>
+                        <a href='{% url "account_logout" %}' class='logout nav-link'>Logout</a>
+                    </li>
+                {% else %}
+                    <a href='{% url "account_login" %}' class='login nav-link'>Login</a>
+                {% endif %}
+            </ul>
+            <form action='{% url "moviebbs:youtube_search" %}' method='get'>
+                {% csrf_token %}
+                <input type="text" class = 'form_control' name="word" placeholder = 'キーワードを入力' value='{{ word }}'>
+                <input type='submit'class = 'btn btn-primary' value="YouTubeを検索">
+            </form>
+        </nav>
+        <div class='container'>
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>ゆっくり村</h1>
+
+{% for article in object_list %}
+<div class='article'>
+  <p>{{ article.category }}</p>
+
+  {% if article.comments.all %}
+      <p>最新のコメント: {{ article.comments.latest.created_at }}</p>
+  {% else %}
+      <p>{{ article.created_at }}</p>
+  {% endif %}
+
+  <p><iframe width="560" height="315" src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
+  <p>{{ article.text }}<a/></p>
+  <p><a href='{% url "moviebbs:detail" article.pk %}' class='btn btn-outline-primary'>この動画について語り合う</a></p>
+</div>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    <div>
+        <a href='{% url "moviebbs:create" %}' class='btn btn-outline-primary'>新しい投稿</a>
+    </div>
+{% endif %}
+
+{% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+{% endif %}
+{% for i in page_numbers %}
+    {% if page_obj.number == i %}
+        <strong>{{ i }}</strong>
+    {% else %}
+        <a href="?page={{ i }}">{{ i }}</a>
+    {% endif %}
+{% endfor %}
+{% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">次へ</a>
+{% endif %}
+
+{% endblock %}
