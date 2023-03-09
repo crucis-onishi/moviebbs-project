@@ -13,6 +13,8 @@ env.read_env('.env')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
+ALLOWED_HOSTS=['*']
+
 DATABASES = {
     'default': {
         'ENGINE': env.get_value('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
