@@ -1,40 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' >
-    <style>body {padding-top: 80px;}</style>
-    <title>ゆっくり村</title>
-</head>
-<body>
-    <nav class='navbar navbar-expand-sm navbar-dark bg-dark fixed-top'>
-        <a class='navbar-brand' href='{% url "moviebbs:index" %}'>MovieBBS</a>
-        <ul class='navbar-nav'>
-            {% if user.is_authenticated %}
-                <li class='nav-time'>
-                    <span class='navbar-text'>{{ user }} - </span>
-                </li>
-                <li class='nav-item'>
-                    <a href='{% url "account_logout" %}' class='logout nav-link'>Logout</a>
-                </li>
-            {% else %}
-                <a href='{% url "account_login" %}' class='login nav-link'>Login</a>
-            {% endif %}
-        </ul>
-    </nav>
-    <header>
-        <div class = 'header-area'>
-            <h1>「{{ word }}」の検索結果</h1>
-        </div>
-    </header>
-    <form action='' method = 'get' onsubmit='doSomething();return false;'>
-        {% csrf_token %}
-        <input type="text" class = 'form_control' name="word" placeholder = 'キーワードを入力' value='{{ word }}'>
-        <input type='submit'class = 'btn btn-primary' value="Youtubeを検索">
-    </form>
+{% extends 'base.html' %}
+{% block content %}
 
-    <div class = "main-container">
+    <h1>「{{ word }}」の検索結果</h1>
 
         <table class="table">
             <thead>
@@ -58,5 +25,5 @@
             </tbody>
             {% endfor %}
         </table>
-    </div>
-</body>
+
+{% endblock %}

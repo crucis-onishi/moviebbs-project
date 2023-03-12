@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{ article.title }}</h1>
-<div>
-    <p>{{ article.category.category_name }}</p>
-    <p><iframe width="560" height="315" src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
+<h1>{{ movie_title }}</h1>
+<div class="card mb-4">
+  <div class='card-body'>
+    <strong class="d-inline-block mb-2 text-success">{{ article.category }}</strong>
+    <div class="iframe-wrapper">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
     <p>{{ article.text }}</p>
     <p>{{ movie_title }}</p>
+  </div>
 </div>
 <div>
     <a href='{% url "moviebbs:index" %}'  class='btn btn-outline-primary'>一覧へ戻る</a>
