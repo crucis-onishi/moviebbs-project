@@ -5,8 +5,8 @@
 
 <form action='' method='post'>
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type='submit' class='submit'>作成</button>
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary" name="button">作成</button>
 </form>
 <div>
     <a href='JavaScript:history.back()'>&lt; 戻る</a>
