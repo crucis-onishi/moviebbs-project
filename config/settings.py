@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount', # 追加
     'allauth.socialaccount.providers.twitter', # 追加
     'allauth.socialaccount.providers.google', # 追加
+    'bootstrap4', # 追加
 ]
+
+# Bootstrap4 jqueryを使用するため追加
+BOOTSTRAP4 = {
+   'include_jquery': True,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +60,10 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], # テンプレート用のフォルダを追記
+        'DIRS': [
+        os.path.join(BASE_DIR, 'templates'),
+        os.path.join(BASE_DIR, 'templates', 'allauth'),
+        ], # テンプレート用のフォルダを追記
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -62,6 +71,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            # Bootstrap4を使用するために追加
+            'builtins': [
+                'bootstrap4.templatetags.bootstrap4',
             ],
         },
     },
@@ -129,3 +142,6 @@ SITE_ID = 1
 # ログイン・ログアウト時のリダイレクト先
 LOGIN_REDIRECT_URL = '/moviebbs/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+#メールアドレスを確認しない
+ACCOUNT_EMAIL_VERIFICATION = 'none'
