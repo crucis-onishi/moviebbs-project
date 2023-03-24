@@ -11,7 +11,7 @@ from django.views.generic import View
 from . import get_data_api
 import json
 
-from .forms import CommentForm
+from .forms import CreateForm, CommentForm
 
 
 class IndexView(generic.ListView):
@@ -71,11 +71,18 @@ class CreateView(LoginRequiredMixin, generic.edit.CreateView):
     fields = ['text', 'movie_url', 'category']
     template_name = 'moviebbs/create.html'
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.movie_id = get_data_api.get_movie_id(form.cleaned_data['movie_url'])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-        return super(CreateView, self).form_valid(form)
+        # 新規投稿フォーム
+        context['create_form'] = CreateForm
+        return context
+        
+    def form_valid(self, create_form):
+        create_form.instance.user = self.request.user
+        create_form.instance.movie_id = get_data_api.get_movie_id(create_form.cleaned_data['movie_url'])
+
+        return super(CreateView, self).form_valid(create_form)
 
 class DeleteView(LoginRequiredMixin, generic.edit.DeleteView):
     model = Article
