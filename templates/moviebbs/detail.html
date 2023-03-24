@@ -36,7 +36,7 @@
   <h2>コメント投稿</h2>
   <form action='{% url "moviebbs:comment" article.pk %}' method="post">
     {% csrf_token %}
-    {{ comment_form}}
+    {% bootstrap_form comment_form %}
     <div>
       <button type="submit" class='btn btn-outline-primary'>送信</button>
     </div>
