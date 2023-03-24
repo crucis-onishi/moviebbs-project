@@ -9,7 +9,7 @@ class CreateForm(forms.ModelForm):
         model = Article
         fields = ('text', 'movie_url', 'category',)
         labels = {
-            'text':'この動画について',
+            'text':'コメント',
             'movie_url':'Youtube動画のURL',
             'category':'カテゴリー選択',
         }
