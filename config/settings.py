@@ -13,12 +13,16 @@ env.read_env('.env')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS = ['ykrvil.com']
 
 DATABASES = {
     'default': {
-        'ENGINE': env.get_value('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
-        'NAME': env.get_value('DATABASE_DB', default=os.path.join(BASE_DIR, 'db.sqlite3')),
+        'ENGINE': env.get_value('DATABASE_ENGINE'),
+        'NAME': env.get_value('DATABASE_DB'),
+        'USER': env.get_value('DATABASE_USER'),
+        'PASSWORD': env.get_value('DATABASE_PASSWORD'),
+        'HOST': env.get_value('DATABASE_HOST'),
+        'PORT': env.get_value('DATABASE_PORT'),
     }
 }
 
@@ -120,9 +124,12 @@ USE_TZ = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_NAME = os.path.basename(BASE_DIR)
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),] # 静的ファイルのディレクトリの場所
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = '/static/'
+STATIC_ROOT = '/usr/share/nginx/html/static' # 静的ファイルを集める場所（STATIC_ROOT）を指定
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # 追加の静的ファイル探索パス
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/usr/share/nginx/html/media'
 
 
 # Default primary key field type

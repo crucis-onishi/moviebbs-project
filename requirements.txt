@@ -3,3 +3,4 @@ django-environ
 google-api-python-client
 oauth2client
 pandas
+django-bootstrap4

@@ -1,0 +1,23 @@
+{% load socialaccount %}
+
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+
+{% if provider.name == "Google" %}
+<div class="input-group">
+  <span class="input-group-addon addon-google">
+	<i class="fa fa-fw fa-2x fa-google fa-fw"></i>
+  </span>
+  <a class="btn btn-lg btn-block btn-google socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"> Googleでサインイン</a>
+</div>
+{% elif provider.name == "Twitter" %}
+<div class="input-group">
+  <span class="input-group-addon addon-twitter">
+	<i class="fa fa-fw fa-2x fa-twitter fa-fw"></i>
+  </span>
+  <a class="btn btn-lg btn-block btn-twitter  socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"> Twitterでサインイン</a>
+</div>
+{% endif %}
+
+{% endfor %}
