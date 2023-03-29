@@ -3,10 +3,12 @@ from django.urls import reverse_lazy
 from django.views import generic
 from .models import Category, Article, Comment # モデル
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SearchForm
+from .forms import SearchForm, CreateForm
 from django.core.paginator import Paginator
 
+from django.http import JsonResponse
 from django.http import HttpResponse
+
 from django.views.generic import View
 from . import get_data_api
 import json
@@ -68,7 +70,8 @@ class DetailView(generic.DetailView):
 
 class CreateView(LoginRequiredMixin, generic.edit.CreateView):
     model = Article
-    fields = ['text', 'movie_url', 'category']
+    form_class = CreateForm
+    success_url = reverse_lazy('moviebbs:index')
     template_name = 'moviebbs/create.html'
 
     def get_context_data(self, **kwargs):
@@ -77,12 +80,30 @@ class CreateView(LoginRequiredMixin, generic.edit.CreateView):
         # 新規投稿フォーム
         context['create_form'] = CreateForm
         return context
-        
+
     def form_valid(self, create_form):
         create_form.instance.user = self.request.user
         create_form.instance.movie_id = get_data_api.get_movie_id(create_form.cleaned_data['movie_url'])
 
         return super(CreateView, self).form_valid(create_form)
+
+
+def ajax_get_category(request):
+    pk = request.GET.get('pk')
+    # pkパラメータがない、もしくはpk=空文字列だった場合は全カテゴリを返す
+    if not pk:
+        category_list = Category.objects.all()
+
+    # pkがあれば、そのpkでカテゴリを絞り込む
+    else:
+        category_list = Category.objects.filter(parent__pk=pk)
+
+    # [ {'name': 'サッカー', 'pk': '3'}, {...}, {...} ] という感じのリストになる
+    category_list = [{'pk': category.pk, 'name': category.name} for category in category_list]
+
+    # JSONで返す
+    return JsonResponse({'categoryList': category_list})
+
 
 class DeleteView(LoginRequiredMixin, generic.edit.DeleteView):
     model = Article

@@ -2,8 +2,15 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+class ParentCategory(models.Model):
+    name = models.CharField('親カテゴリ名', max_length=255)
+
+    def __str__(self):
+        return self.name
+
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField('カテゴリ名', max_length=255)
+    parent = models.ForeignKey(ParentCategory, verbose_name='親カテゴリ', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.name
@@ -13,7 +20,7 @@ class Article(models.Model):
     text = models.TextField(null=True)
     movie_url = models.URLField(max_length=255)
     movie_id = models.CharField(max_length=50)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, verbose_name='カテゴリ', on_delete=models.PROTECT, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
