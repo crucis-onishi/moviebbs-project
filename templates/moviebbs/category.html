@@ -1,18 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>ゆっくり村β</h1>
-<p>※ベータ版です</p>
-<div class="card mb-4">
-  <div class='card-body'>
-    <p>
-      好きな動画をみんなに紹介したり、<br>
-      興味深い動画について他人に意見を求めたり、<br>
-      動画を肴に雑談したり、語り合ったりするスペースです。<br>
-      ゆっくりしていってね。
-    </p>
-　</div>
-</div>
+<h1>{{ category.parent }} > {{ category.name }}</h1>
 
 {% for article in object_list %}
 <div class="card mb-4">

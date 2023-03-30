@@ -28,6 +28,41 @@ class IndexView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # ページネーション用のコンテキストデータ
+        paginator = context['paginator']
+        page_numbers_range = 10  # ページ番号の表示数
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        if start_index + page_numbers_range > max_index:
+            end_index = max_index
+        else:
+            end_index = start_index + page_numbers_range
+
+        context['page_numbers'] = paginator.page_range[start_index:end_index]
+        return context
+
+class CategoryView(generic.ListView):
+    model = Article
+    template_name = 'moviebbs/category.html'
+    paginate_by = 10  # 1ページあたりの表示数
+
+    def get_queryset(self):
+        # カテゴリーIDに対応する記事をフィルタリング
+        queryset = Article.objects.filter(category_id=self.kwargs['pk'])
+        return queryset.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # フィルタリングしたカテゴリーオブジェクト
+        category = Category.objects.get(pk=self.kwargs['pk'])
+        context['category'] = category
+
+        # ページネーション用のコンテキストデータ
         paginator = context['paginator']
         page_numbers_range = 10  # ページ番号の表示数
         max_index = len(paginator.page_range)

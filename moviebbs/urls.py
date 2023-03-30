@@ -7,6 +7,7 @@ app_name = 'moviebbs'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('category/<int:pk>/', views.CategoryView.as_view(), name='category'),
     path('create/', views.CreateView.as_view(), name='create'),
     path('api/category/get/', views.ajax_get_category, name='ajax_get_category'),
     path('comment/<int:pk>/', views.CommentView.as_view(), name='comment'),
