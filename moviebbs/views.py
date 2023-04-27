@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
-from .models import Category, Article, Comment # モデル
+from .models import ParentCategory, Category, Article, Comment # モデル
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SearchForm, CreateForm
 from django.core.paginator import Paginator
@@ -62,6 +62,40 @@ class CategoryView(generic.ListView):
         # フィルタリングしたカテゴリーオブジェクト
         category = get_object_or_404(Category, name=self.kwargs['category_name'])
         context['category'] = category
+
+        # ページネーション用のコンテキストデータ
+        paginator = context['paginator']
+        page_numbers_range = 10  # ページ番号の表示数
+        max_index = len(paginator.page_range)
+        page = self.request.GET.get('page')
+        current_page = int(page) if page else 1
+
+        start_index = int((current_page - 1) / page_numbers_range) * page_numbers_range
+        if start_index + page_numbers_range > max_index:
+            end_index = max_index
+        else:
+            end_index = start_index + page_numbers_range
+
+        context['page_numbers'] = paginator.page_range[start_index:end_index]
+        return context
+
+class ParentView(generic.ListView):
+    model = Article
+    template_name = 'moviebbs/parent_category.html'
+    paginate_by = 10  # 1ページあたりの表示数
+
+    def get_queryset(self):
+        # 親カテゴリ名に対応するカテゴリをフィルタリング
+        parent_category = get_object_or_404(ParentCategory, name=self.kwargs['category_parent'])
+        queryset = Article.objects.filter(category__parent=parent_category)
+        return queryset.order_by('-created_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # フィルタリングした親カテゴリオブジェクト
+        parent_category = get_object_or_404(ParentCategory, name=self.kwargs['category_parent'])
+        context['parent_category'] = parent_category
 
         # ページネーション用のコンテキストデータ
         paginator = context['paginator']

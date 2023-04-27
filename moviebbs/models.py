@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 class ParentCategory(models.Model):
-    name = models.CharField('親カテゴリ名', max_length=255)
+    name = models.CharField('親カテゴリ名', max_length=255, unique=True)
 
     def __str__(self):
         return self.name
