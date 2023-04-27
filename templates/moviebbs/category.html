@@ -6,7 +6,7 @@
 {% for article in object_list %}
 <div class="card mb-4">
   <div class='card-body'>
-    <strong class="d-inline-block mb-2 text-success">{{ article.category.parent }} > <a href='{% url "moviebbs:category" article.category.pk %}'>{{ article.category }}</a></strong>
+    <strong class="d-inline-block mb-2 text-success">{{ article.category.parent }} > {{ article.category }}</strong>
 
     {% if article.comments.all %}
         <p>最新のコメント: {{ article.comments.latest.created_at }}</p>

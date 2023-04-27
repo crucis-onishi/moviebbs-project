@@ -51,15 +51,16 @@ class CategoryView(generic.ListView):
     paginate_by = 10  # 1ページあたりの表示数
 
     def get_queryset(self):
-        # カテゴリーIDに対応する記事をフィルタリング
-        queryset = Article.objects.filter(category_id=self.kwargs['pk'])
+        # カテゴリー名に対応する記事をフィルタリング
+        category = get_object_or_404(Category, name=self.kwargs['category_name'])
+        queryset = Article.objects.filter(category=category)
         return queryset.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         # フィルタリングしたカテゴリーオブジェクト
-        category = Category.objects.get(pk=self.kwargs['pk'])
+        category = get_object_or_404(Category, name=self.kwargs['category_name'])
         context['category'] = category
 
         # ページネーション用のコンテキストデータ

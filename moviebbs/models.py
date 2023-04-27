@@ -9,7 +9,7 @@ class ParentCategory(models.Model):
         return self.name
 
 class Category(models.Model):
-    name = models.CharField('カテゴリ名', max_length=255)
+    name = models.CharField('カテゴリ名', max_length=255, unique=True)
     parent = models.ForeignKey(ParentCategory, verbose_name='親カテゴリ', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
