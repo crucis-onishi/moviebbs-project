@@ -7,6 +7,16 @@
 
 <h1 class="h3 mb-3 font-weight-normal">ログイン</h1>
 
+<div class="card mb-4">
+  <div class='card-body'>
+    <p>
+      ゆっくり村アカウントを<a href='{% url "account_signup" %}'>登録</a>するか、下記のソーシャルアカウントでログインできます。<br>
+      ログインするとゆっくり村で動画を紹介したり、コメントの投稿ができるようになります。<br>
+      ユーザー名は公開されます。実名（本名）である必要はありません。
+    </p>
+  </div>
+</div>
+
 {% get_providers as socialaccount_providers %}
 {% if socialaccount_providers %}
 
