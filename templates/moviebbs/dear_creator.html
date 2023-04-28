@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>クリエイターの方へ</h1>
+<div class="card mb-4">
+  <div class='card-body'>
+    <p>
+      ゆっくり村はあなたの作った動画をより多くの人々に知ってもらうためのスペースです。<br>
+      村人たちはあなたの動画を見て時間を潰したり<br>
+      褒め称えたり<br>
+      話題として自由に語り合うことができます。<br>
+      <br>
+      ゆっくり村に動画を投稿するには<a href='{% url "account_login" %}'>ログイン</a>が必要です。<br>
+      ゆっくり村アカウントを<a href='{% url "account_signup" %}'>登録</a>するか、既定のソーシャルアカウントでログインできます。<br>
+      ゆっくりしていってね。
+    </p>
+　</div>
+</div>
+
+{% endblock %}

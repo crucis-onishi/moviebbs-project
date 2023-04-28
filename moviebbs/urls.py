@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 app_name = 'moviebbs'
 
@@ -14,4 +15,5 @@ urlpatterns = [
     path('comment/<int:pk>/', views.CommentView.as_view(), name='comment'),
     path('<int:pk>/delete/', views.DeleteView.as_view(), name='delete'),
     path('youtube_search/', views.YoutubeSearchView.as_view(), name='youtube_search'),
+    path('dear_creator/', TemplateView.as_view(template_name="moviebbs/dear_creator.html"), name='dear_creator'),
 ]
