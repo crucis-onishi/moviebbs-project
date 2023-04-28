@@ -34,14 +34,12 @@
                 <a class="nav-link" href='{% url "account_signup" %}' class='signup nav-link'>新規登録</a>
             </li>
         {% endif %}
-        <li class='nav-item'>
-          <form class="form-inline mt-2 mt-md-0" action='{% url "moviebbs:youtube_search" %}' method='get'>
-              {% csrf_token %}
-              <input class="form-control mr-sm-2" type="text" class='form_control' name="word" placeholder = 'キーワードを入力' value='{{ word }}'>
-              <input class="btn btn-outline-primary my-2 my-sm-0" type='submit' class='btn btn-primary' value="YouTubeを検索">
-          </form>
-        </li>
       </ul>
+      <form class="form-inline mt-2 mt-md-0" action='{% url "moviebbs:youtube_search" %}' method='get'>
+          {% csrf_token %}
+          <input class="form-control mr-sm-2" type="text" class='form_control' name="word" placeholder = 'キーワードを入力' value='{{ word }}'>
+          <input class="btn btn-outline-primary my-2 my-sm-0" type='submit' class='btn btn-primary' value="YouTubeを検索">
+      </form>
     </div>
     </nav>
 
