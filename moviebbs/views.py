@@ -198,7 +198,7 @@ class CommentView(LoginRequiredMixin, generic.edit.CreateView):
 
 class YoutubeSearchView(View):
     def get(self, request, *args, **kwargs):
-        keyword = request.GET['word']
+        keyword = request.GET.get('word', '') or 'ゆっくり村' # デフォルト値として「ゆっくり村」を設定
         youtube_df = get_data_api.youtube_search(keyword)
         json_record = youtube_df.reset_index().to_json(orient='records')
         data = []
