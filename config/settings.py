@@ -137,6 +137,7 @@ MEDIA_ROOT = '/usr/share/nginx/html/media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# all-auth settings
 # 認証
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -147,8 +148,11 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 # ログイン・ログアウト時のリダイレクト先
-LOGIN_REDIRECT_URL = '/moviebbs/'
+LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+#メールアドレスの入力を必須に
+ACCOUNT_EMAIL_REQUIRED = True
 
 #メールアドレスを確認しない
 ACCOUNT_EMAIL_VERIFICATION = 'none'
