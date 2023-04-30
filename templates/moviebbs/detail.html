@@ -4,9 +4,13 @@
 <h1>{{ movie_title }}</h1>
 <div class="card mb-4">
   <div class='card-body'>
-    <strong class="d-inline-block mb-2 text-success">{{ article.category }}</strong>
+    <strong class="d-inline-block mb-2 text-success"><a href='{% url "moviebbs:parent_category" article.category.parent %}'>{{ article.category.parent }}</a> > <a href='{% url "moviebbs:category" article.category.name %}'>{{ article.category }}</a></strong>
     <div class="iframe-wrapper">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      {% if article.movie_platform == "youtube" %}
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      {% elif article.movie_platform == "niconico" %}
+        <iframe width="560" height="315" src="https://embed.nicovideo.jp/watch/{{ article.movie_id }}" title="Niconico video player" frameborder="0" allowfullscreen></iframe>
+      {% endif %}
     </div>
     <p>{{ article.text }}</p>
     <p>{{ movie_title }}</p>

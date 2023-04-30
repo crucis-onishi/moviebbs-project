@@ -123,11 +123,11 @@ class DetailView(generic.DetailView):
 
         # 動画のメタ情報
         movie_id = self.object.movie_id
-        movie_meta = get_data_api.get_movie_meta(movie_id)
+        movie_platform = self.object.movie_platform
+        movie_meta = get_data_api.get_movie_meta(movie_id, movie_platform)
 
         context['movie_title'] = movie_meta['movie_title']
         context['channeltitle'] = movie_meta['channeltitle']
-        # context['movie_player'] = movie_meta['movie_player']
 
         # コメントフォーム
         context['comment_form'] = CommentForm
@@ -153,9 +153,16 @@ class CreateView(LoginRequiredMixin, generic.edit.CreateView):
 
     def form_valid(self, create_form):
         create_form.instance.user = self.request.user
-        create_form.instance.movie_id = get_data_api.get_movie_id(create_form.cleaned_data['movie_url'])
+        movie_url = create_form.cleaned_data["movie_url"]
+        movie_platform = get_data_api.get_movie_platform(movie_url)
 
-        return super(CreateView, self).form_valid(create_form)
+        # 動画IDの取得
+        movie_id = get_data_api.get_movie_id(movie_url)
+
+        create_form.instance.movie_id = movie_id
+        create_form.instance.movie_platform = movie_platform
+
+        return super().form_valid(create_form)
 
 
 def ajax_get_category(request):

@@ -3,6 +3,8 @@ from apiclient.errors import HttpError
 from oauth2client.tools import argparser
 import pandas as pd
 import re # 正規表現
+import requests
+from xml.etree import ElementTree
 
 import environ
 
@@ -13,33 +15,62 @@ YOUTUBE_API_KEY = env('YOUTUBE_API_KEY')
 
 YOUTUBE_API_SERVICE_NAME = 'youtube'
 
-def get_movie_id(movie_url):
-    match = re.search(r'\?v=([^&]+)', movie_url)
-    if match:
-        movie_id = match.group(1)
-        return movie_id
+def get_movie_platform(url):
+    youtube_pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)"
+    niconico_pattern = r"(?:https?:\/\/)?(?:www\.)?(?:niconico\.jp|nicovideo\.jp)"
+
+    if re.search(youtube_pattern, url):
+        return "youtube"
+    elif re.search(niconico_pattern, url):
+        return "niconico"
     else:
-        return 'OgYWssWn7uQ'
+        return None
 
-def get_movie_meta(movie_id):
+def get_movie_id(movie_url):
+    youtube_match = re.search(r'\?v=([^&]+)', movie_url)
+    niconico_match = re.search(r'watch/(\w+)', movie_url)
 
-    youtube = build(YOUTUBE_API_SERVICE_NAME, 'v3', developerKey = YOUTUBE_API_KEY)
-    videos_response = youtube.videos().list(part='snippet,statistics', id='{},'.format(movie_id)).execute()
+    if youtube_match:
+        movie_id = youtube_match.group(1)
+    elif niconico_match:
+        movie_id = niconico_match.group(1)
+    else:
+        movie_id = 'OgYWssWn7uQ'
 
-    # snippet
-    snippetInfo = videos_response["items"][0]["snippet"]
-    # 動画タイトル
-    movie_title = snippetInfo['title']
-    # チャンネル名
-    channeltitle = snippetInfo['channelTitle']
+    return movie_id
 
-    # 再生プレーヤー
-    movie_player = '<iframe width="560" height="315" src="https://www.youtube.com/embed/{}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'.format(movie_id)
+def get_movie_meta(movie_id, movie_platform):
+    if movie_platform == "youtube":
+        youtube = build(YOUTUBE_API_SERVICE_NAME, 'v3', developerKey = YOUTUBE_API_KEY)
+        videos_response = youtube.videos().list(part='snippet,statistics', id='{},'.format(movie_id)).execute()
+
+        # snippet
+        snippetInfo = videos_response["items"][0]["snippet"]
+        # 動画タイトル
+        movie_title = snippetInfo['title']
+        # チャンネル名
+        channeltitle = snippetInfo['channelTitle']
+    elif movie_platform == "niconico":
+        url = f'http://ext.nicovideo.jp/api/getthumbinfo/{movie_id}'
+        response = requests.get(url)
+        tree = ElementTree.fromstring(response.content)
+        status = tree.attrib['status']
+        
+        if status is not None and status == 'ok':
+            movie_title_element = tree.find('./thumb/title')
+            channeltitle_element = tree.find('./thumb/user_nickname')
+            movie_title = movie_title_element.text if movie_title_element is not None else "Error: Could not retrieve video title"
+            channeltitle = channeltitle_element.text if channeltitle_element is not None else "Error: Could not retrieve channel title"
+        else:
+            movie_title = "Error: Could not retrieve video title"
+            channeltitle = "Error: Could not retrieve channel title"
+    else:
+        movie_title = "Unknown Title"
+        channeltitle = "Unknown Channel"
 
     movie_meta = {
     'movie_title': movie_title,
     'channeltitle': channeltitle,
-    'movie_player': movie_player,
     }
 
     return movie_meta

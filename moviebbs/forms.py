@@ -16,7 +16,7 @@ class CreateForm(forms.ModelForm):
         fields = ['text', 'movie_url', 'parent_category', 'category']
         labels = {
             'text':'コメント',
-            'movie_url':'Youtube動画のURL',
+            'movie_url':'Youtubeまたはニコニコ動画のURL',
             'parent_category':'親カテゴリー選択',
             'category':'カテゴリー選択',
         }

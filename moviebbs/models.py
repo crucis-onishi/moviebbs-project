@@ -20,6 +20,7 @@ class Article(models.Model):
     text = models.TextField(null=True)
     movie_url = models.URLField(max_length=255)
     movie_id = models.CharField(max_length=50)
+    movie_platform = models.CharField(max_length=50, default='youtube')
     category = models.ForeignKey(Category, verbose_name='カテゴリ', on_delete=models.PROTECT, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

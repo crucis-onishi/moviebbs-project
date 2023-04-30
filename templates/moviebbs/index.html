@@ -26,7 +26,11 @@
     {% endif %}
 
     <div class="iframe-wrapper">
+      {% if article.movie_platform == "youtube" %}
         <iframe src="https://www.youtube.com/embed/{{ article.movie_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      {% elif article.movie_platform == "niconico" %}
+        <iframe src="https://embed.nicovideo.jp/watch/{{ article.movie_id }}" title="Niconico video player" frameborder="0" allowfullscreen></iframe>
+      {% endif %}
     </div>
 
     <p>{{ article.text }}<a/></p>
