@@ -127,7 +127,8 @@ class DetailView(generic.DetailView):
         movie_meta = get_data_api.get_movie_meta(movie_id, movie_platform)
 
         context['movie_title'] = movie_meta['movie_title']
-        context['channeltitle'] = movie_meta['channeltitle']
+        context['channel_title'] = movie_meta['channel_title']
+        context['movie_description'] = movie_meta['movie_description']
 
         # コメントフォーム
         context['comment_form'] = CommentForm

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{ article.text }}</h1>
 <div class="card mb-4">
   <div class='card-body'>
+    <h1>{{ article.text }}</h1>
     <strong class="d-inline-block mb-2 text-success"><a href='{% url "moviebbs:parent_category" article.category.parent %}'>{{ article.category.parent }}</a> > <a href='{% url "moviebbs:category" article.category.name %}'>{{ article.category }}</a></strong>
     <div class="iframe-wrapper">
       {% if article.movie_platform == "youtube" %}
@@ -13,6 +13,7 @@
       {% endif %}
     </div>
     <p>動画タイトル：{{ movie_title }}</p>
+    <p>{{ movie_description }}</p>
   </div>
 </div>
 <div>

@@ -46,31 +46,37 @@ def get_movie_meta(movie_id, movie_platform):
 
         # snippet
         snippetInfo = videos_response["items"][0]["snippet"]
-        # 動画タイトル
+
+        # 動画のメタ情報
         movie_title = snippetInfo['title']
-        # チャンネル名
-        channeltitle = snippetInfo['channelTitle']
+        channel_title = snippetInfo['channelTitle']
+        movie_description = snippetInfo['description']
+
     elif movie_platform == "niconico":
         url = f'http://ext.nicovideo.jp/api/getthumbinfo/{movie_id}'
         response = requests.get(url)
         tree = ElementTree.fromstring(response.content)
         status = tree.attrib['status']
-        
+
         if status is not None and status == 'ok':
             movie_title_element = tree.find('./thumb/title')
-            channeltitle_element = tree.find('./thumb/user_nickname')
+            channel_title_element = tree.find('./thumb/user_nickname')
+            movie_description_element = tree.find('./thumb/description')
             movie_title = movie_title_element.text if movie_title_element is not None else "Error: Could not retrieve video title"
-            channeltitle = channeltitle_element.text if channeltitle_element is not None else "Error: Could not retrieve channel title"
+            channel_title = channel_title_element.text if channel_title_element is not None else "Error: Could not retrieve channel title"
+            movie_description = movie_description_element.text if movie_description_element is not None else "Error: Could not retrieve video description"
         else:
             movie_title = "Error: Could not retrieve video title"
-            channeltitle = "Error: Could not retrieve channel title"
+            channel_title = "Error: Could not retrieve channel title"
+            movie_description = "Unknown Description"
     else:
         movie_title = "Unknown Title"
-        channeltitle = "Unknown Channel"
+        channel_title = "Unknown Channel"
 
     movie_meta = {
     'movie_title': movie_title,
-    'channeltitle': channeltitle,
+    'channel_title': channel_title,
+    'movie_description': movie_description,
     }
 
     return movie_meta
@@ -89,7 +95,7 @@ def youtube_search(keyword):
         viewcount = youtube.videos().list(part = 'statistics', id = search_result['id']['videoId']).execute()
         viewcount_list.append(viewcount['items'][0]['statistics']['viewCount'] + '回')
         title_list.append(search_result['snippet']['title'])
-        channel_list.append(search_result['snippet']['channelTitle'])
+        channel_list.append(search_result['snippet']['channel_title'])
         thumbnail_list.append(search_result['snippet']['thumbnails']['default']['url'])
         videoid.append(search_result['id']['videoId'])
 
