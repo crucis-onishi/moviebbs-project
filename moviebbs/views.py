@@ -13,6 +13,10 @@ from django.views.generic import View
 from . import get_data_api
 import json
 
+from django.db import models
+from django.db.models import F, Max
+from django.db.models.functions import Coalesce
+
 from .forms import CreateForm, CommentForm
 
 
@@ -23,8 +27,15 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        # このメソッドでクエリセットを加工することができます。
-        return queryset.order_by('-created_at')
+
+        # 最新のコメントのcreated_atまたはArticleのcreated_atで降順に並び替え
+        queryset = queryset.annotate(
+            latest_activity=Coalesce(
+                Max(F('comments__created_at'), output_field=models.DateTimeField()),
+                F('created_at')
+            )
+        ).order_by('-latest_activity')
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -54,7 +65,16 @@ class CategoryView(generic.ListView):
         # カテゴリー名に対応する記事をフィルタリング
         category = get_object_or_404(Category, name=self.kwargs['category_name'])
         queryset = Article.objects.filter(category=category)
-        return queryset.order_by('-created_at')
+
+        # 最新のコメントのcreated_atまたはArticleのcreated_atで降順に並び替え
+        queryset = queryset.annotate(
+            latest_activity=Coalesce(
+                Max(F('comments__created_at'), output_field=models.DateTimeField()),
+                F('created_at')
+            )
+        ).order_by('-latest_activity')
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,7 +108,16 @@ class ParentView(generic.ListView):
         # 親カテゴリ名に対応するカテゴリをフィルタリング
         parent_category = get_object_or_404(ParentCategory, name=self.kwargs['category_parent'])
         queryset = Article.objects.filter(category__parent=parent_category)
-        return queryset.order_by('-created_at')
+
+        # 最新のコメントのcreated_atまたはArticleのcreated_atで降順に並び替え
+        queryset = queryset.annotate(
+            latest_activity=Coalesce(
+                Max(F('comments__created_at'), output_field=models.DateTimeField()),
+                F('created_at')
+            )
+        ).order_by('-latest_activity')
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
