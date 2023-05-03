@@ -8,11 +8,12 @@
   <div class='card-body'>
     <strong class="d-inline-block mb-2 text-success"><a href='{% url "moviebbs:parent_category" article.category.parent %}'>{{ article.category.parent }}</a> > {{ article.category }}</strong>
 
-    {% if article.comments.all %}
-        <p>最新のコメント: {{ article.comments.latest.created_at }}</p>
-    {% else %}
-        <p>{{ article.created_at }}</p>
-    {% endif %}
+    <p>
+      {% if article.comments.all %}
+        最新のコメント: {{ article.comments.latest.created_at }}<br>
+      {% endif %}
+    投稿日時：{{ article.created_at }}
+    </p>
 
     <div class="iframe-wrapper">
       {% if article.movie_platform == "youtube" %}
