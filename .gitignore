@@ -3,3 +3,4 @@ venv
 .env
 config/settings_local.py
 db.sqlite3
+ykrvil.log

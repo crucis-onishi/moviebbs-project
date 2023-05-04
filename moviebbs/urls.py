@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 app_name = 'moviebbs'
 
 urlpatterns = [
+    # path('test/', views.sample_view, name='sample_view'),
     path('', views.IndexView.as_view(), name='index'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('category/<str:category_name>/', views.CategoryView.as_view(), name='category'),

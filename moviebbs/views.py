@@ -19,6 +19,17 @@ from django.db.models.functions import Coalesce
 
 from .forms import CreateForm, CommentForm
 
+import logging
+
+logger = logging.getLogger(__name__) # 現在のモジュールのロガーを取得
+
+# def sample_view(request):
+#     try:
+#         # ここでエラーが発生する可能性のあるコードを記述します
+#         result = 1 / 0  # 例として ZeroDivisionError を発生させるコード
+#     except ZeroDivisionError as e:
+#         logger.error(f"エラーが発生しました: {e}")
+#         return HttpResponse("エラーが発生しました")
 
 class IndexView(generic.ListView):
     model = Article
