@@ -17,4 +17,5 @@ urlpatterns = [
     path('<int:pk>/delete/', views.DeleteView.as_view(), name='delete'),
     path('youtube_search/', views.YoutubeSearchView.as_view(), name='youtube_search'),
     path('dear_creator/', TemplateView.as_view(template_name="moviebbs/dear_creator.html"), name='dear_creator'),
+    path('google5173443084b9a048.html/', views.google_search_console, name='google_search_console'),
 ]

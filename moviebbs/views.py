@@ -257,3 +257,6 @@ class YoutubeSearchView(View):
                 'data':data,
         }
         return  render(request, 'moviebbs/result.html', context)
+
+def google_search_console(request):
+    return render(request, 'google/google5173443084b9a048.html')
