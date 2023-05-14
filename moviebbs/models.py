@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 
 class ParentCategory(models.Model):
     name = models.CharField('親カテゴリ名', max_length=255, unique=True)
+    slug = models.CharField('スラッグ', max_length=24, default='fuga')
 
     def __str__(self):
         return self.name
 
 class Category(models.Model):
     name = models.CharField('カテゴリ名', max_length=255, unique=True)
+    slug = models.CharField('スラッグ', max_length=24, default='hoge')
     parent = models.ForeignKey(ParentCategory, verbose_name='親カテゴリ', on_delete=models.PROTECT, null=True)
 
     def __str__(self):

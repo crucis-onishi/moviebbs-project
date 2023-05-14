@@ -73,8 +73,8 @@ class CategoryView(generic.ListView):
     paginate_by = 10  # 1ページあたりの表示数
 
     def get_queryset(self):
-        # カテゴリー名に対応する記事をフィルタリング
-        category = get_object_or_404(Category, name=self.kwargs['category_name'])
+        # カテゴリーのスラッグに対応する記事をフィルタリング
+        category = get_object_or_404(Category, slug=self.kwargs['category_slug'])
         queryset = Article.objects.filter(category=category)
 
         # 最新のコメントのcreated_atまたはArticleのcreated_atで降順に並び替え
@@ -91,7 +91,7 @@ class CategoryView(generic.ListView):
         context = super().get_context_data(**kwargs)
 
         # フィルタリングしたカテゴリーオブジェクト
-        category = get_object_or_404(Category, name=self.kwargs['category_name'])
+        category = get_object_or_404(Category, slug=self.kwargs['category_slug'])
         context['category'] = category
 
         # ページネーション用のコンテキストデータ
@@ -116,8 +116,8 @@ class ParentView(generic.ListView):
     paginate_by = 10  # 1ページあたりの表示数
 
     def get_queryset(self):
-        # 親カテゴリ名に対応するカテゴリをフィルタリング
-        parent_category = get_object_or_404(ParentCategory, name=self.kwargs['category_parent'])
+        # 親カテゴリのスラッグに対応するカテゴリをフィルタリング
+        parent_category = get_object_or_404(ParentCategory, slug=self.kwargs['parent_category_slug'])
         queryset = Article.objects.filter(category__parent=parent_category)
 
         # 最新のコメントのcreated_atまたはArticleのcreated_atで降順に並び替え
@@ -134,7 +134,7 @@ class ParentView(generic.ListView):
         context = super().get_context_data(**kwargs)
 
         # フィルタリングした親カテゴリオブジェクト
-        parent_category = get_object_or_404(ParentCategory, name=self.kwargs['category_parent'])
+        parent_category = get_object_or_404(ParentCategory, slug=self.kwargs['parent_category_slug'])
         context['parent_category'] = parent_category
 
         # ページネーション用のコンテキストデータ

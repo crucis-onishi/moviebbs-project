@@ -18,7 +18,7 @@
 <div class="card mb-4">
   <div class='card-body'>
     <h2>{{ article.text }}</h2>
-    <strong class="d-inline-block mb-2 text-success"><a href='{% url "moviebbs:parent_category" article.category.parent %}'>{{ article.category.parent }}</a> > <a href='{% url "moviebbs:category" article.category.name %}'>{{ article.category }}</a></strong>
+    <strong class="d-inline-block mb-2 text-success"><a href='{% url "moviebbs:parent_category" article.category.parent.slug %}'>{{ article.category.parent }}</a> > <a href='{% url "moviebbs:category" parent_category_slug=article.category.parent.slug category_slug=article.category.slug %}'>{{ article.category }}</a></strong>
 
     <!-- 日付 -->
     <p>
