@@ -35,13 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'moviebbs.apps.MoviebbsConfig', # 作成したアプリを追加
     'accounts.apps.AccountsConfig',
-    'django.contrib.sites', # 追加
     'allauth', # 追加
     'allauth.account', # 追加
     'allauth.socialaccount', # 追加
     'allauth.socialaccount.providers.twitter', # 追加
     'allauth.socialaccount.providers.google', # 追加
     'bootstrap4', # 追加
+    'django.contrib.sites', # サイト管理用ツール
+    'django.contrib.sitemaps', # サイトマップ作成用ツール
 ]
 
 # Bootstrap4 jqueryを使用するため追加

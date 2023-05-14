@@ -3,7 +3,14 @@ from . import views
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import ArticleSitemap  # サイトマップのクラス
+
 app_name = 'moviebbs'
+
+sitemaps = {
+    'articles': ArticleSitemap,
+}
 
 urlpatterns = [
     # path('test/', views.sample_view, name='sample_view'),
@@ -18,4 +25,5 @@ urlpatterns = [
     path('youtube_search/', views.YoutubeSearchView.as_view(), name='youtube_search'),
     path('dear_creator/', TemplateView.as_view(template_name="moviebbs/dear_creator.html"), name='dear_creator'),
     path('google5173443084b9a048.html/', views.google_search_console, name='google_search_console'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]
