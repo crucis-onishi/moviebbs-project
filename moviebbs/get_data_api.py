@@ -95,7 +95,7 @@ def youtube_search(keyword):
         viewcount = youtube.videos().list(part = 'statistics', id = search_result['id']['videoId']).execute()
         viewcount_list.append(viewcount['items'][0]['statistics']['viewCount'] + '回')
         title_list.append(search_result['snippet']['title'])
-        channel_list.append(search_result['snippet']['channel_title'])
+        channel_list.append(search_result['snippet']['channelTitle'])
         thumbnail_list.append(search_result['snippet']['thumbnails']['default']['url'])
         videoid.append(search_result['id']['videoId'])
 
